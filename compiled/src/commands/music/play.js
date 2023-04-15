@@ -42,6 +42,7 @@ exports.__esModule = true;
 var wokcommands_1 = require("wokcommands");
 var discord_js_1 = require("discord.js");
 var Player_1 = __importDefault(require("../../utils/Player"));
+var discord_player_1 = require("discord-player");
 exports["default"] = {
     description: "plays a music",
     type: wokcommands_1.CommandType.SLASH,
@@ -52,43 +53,89 @@ exports["default"] = {
             description: "Music to play",
             type: discord_js_1.ApplicationCommandOptionType.String,
             required: true
+        },
+        {
+            name: "247",
+            description: "24/7",
+            type: discord_js_1.ApplicationCommandOptionType.String,
+            required: false,
+            choices: [
+                {
+                    name: "yes",
+                    value: "false"
+                },
+                {
+                    name: "no",
+                    value: "true"
+                }
+            ]
         }
     ],
     callback: function (_a) {
         var interaction = _a.interaction, guild = _a.guild;
         return __awaiter(void 0, void 0, void 0, function () {
-            var query, member, voiceChannel, track, e_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var stri, check, result, results, yes_1, embed, yess, error_1;
+            var _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
-                        query = interaction.options.getString("track");
-                        member = guild.members.cache.get(interaction.member.user.id);
-                        voiceChannel = member.voice.channel;
-                        if (!voiceChannel) {
-                            return [2 /*return*/, {
-                                    content: "You must be in a voice channel"
-                                }];
+                        _d.trys.push([0, 5, , 6]);
+                        stri = interaction.options.getString("247");
+                        check = interaction.options.getString("track");
+                        return [4 /*yield*/, Player_1["default"].search(check, {
+                                requestedBy: interaction.user,
+                                searchEngine: discord_player_1.QueryType.AUTO
+                            })];
+                    case 1:
+                        result = _d.sent();
+                        results = new discord_js_1.EmbedBuilder()
+                            .setTitle("No results")
+                            .setColor("#ff0000")
+                            .setTimestamp();
+                        if (!result.hasTracks()) {
+                            return [2 /*return*/, interaction.reply({ embeds: [results] })];
                         }
                         return [4 /*yield*/, interaction.deferReply()];
-                    case 1:
-                        _b.sent();
-                        _b.label = 2;
                     case 2:
-                        _b.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, Player_1["default"].play(voiceChannel, query, {
+                        _d.sent();
+                        return [4 /*yield*/, interaction.editReply({ content: "Loading a: ".concat(result.playlist ? 'playlist' : 'track') })];
+                    case 3:
+                        _d.sent();
+                        return [4 /*yield*/, Player_1["default"].play((_b = interaction.member.voice.channel) === null || _b === void 0 ? void 0 : _b.id, result, {
                                 nodeOptions: {
-                                    // nodeOptions are the options for guild node (aka your queue in simple word)
-                                    metadata: interaction // we can access this metadata object using queue.metadata later on
+                                    metadata: {
+                                        channel: interaction.channel,
+                                        client: (_c = interaction.guild) === null || _c === void 0 ? void 0 : _c.members.me,
+                                        requestedBy: interaction.user.username
+                                    },
+                                    bufferingTimeout: 3000,
+                                    leaveOnEnd: stri === "false" ? false : true
                                 }
                             })];
-                    case 3:
-                        track = (_b.sent()).track;
-                        return [2 /*return*/, interaction.followUp("**".concat(track.title, "** enqueued!"))];
                     case 4:
-                        e_1 = _b.sent();
-                        // let's return error if something failed
-                        return [2 /*return*/, interaction.followUp("Something went wrong: ".concat(e_1))];
-                    case 5: return [2 /*return*/];
+                        yes_1 = _d.sent();
+                        embed = new discord_js_1.EmbedBuilder();
+                        yess = function () {
+                            var totalDurationMs = yes_1.track.playlist.tracks.reduce(function (a, c) { return c.durationMS + a; }, 0);
+                            var totalDurationSec = Math.floor(totalDurationMs / 1000);
+                            var hours = Math.floor(totalDurationSec / 3600);
+                            var minutes = Math.floor((totalDurationSec % 3600) / 60);
+                            var seconds = totalDurationSec % 60;
+                            var durationStr = "".concat(hours.toString().padStart(2, '0'), ":").concat(minutes.toString().padStart(2, '0'), ":").concat(seconds.toString().padStart(2, '0'));
+                            return durationStr;
+                        };
+                        embed
+                            .setDescription("".concat(yes_1.track.playlist ? "**multiple tracks** from: **".concat(yes_1.track.playlist.title, "**") : "**".concat(yes_1.track.title, "**")))
+                            .setThumbnail("".concat(yes_1.track.playlist ? "".concat(yes_1.track.playlist.thumbnail) : "".concat(yes_1.track.thumbnail)))
+                            .setColor("#00ff08")
+                            .setTimestamp()
+                            .setFooter({ text: "Duration: ".concat(yes_1.track.playlist ? "".concat(yess()) : "".concat(yes_1.track.duration), " | Event Loop Lag ").concat(Player_1["default"].eventLoopLag.toFixed(0)) });
+                        return [2 /*return*/, interaction.editReply({ embeds: [embed] })];
+                    case 5:
+                        error_1 = _d.sent();
+                        console.log(error_1);
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
