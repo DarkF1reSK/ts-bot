@@ -3,7 +3,6 @@ import {Application, ApplicationCommandOptionType, GuildMember, PermissionFlagsB
 import {Embeds} from "../../embeds/kick-embeds"
 export default {
     type: CommandType.BOTH,
-    testOnly: true,
     description: "kicks a user",
     permissions: [PermissionFlagsBits.KickMembers],
     guildOnly: true,

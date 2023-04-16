@@ -5,15 +5,16 @@ import {EmbedBuilder} from "discord.js";
 export default {
     description: "shows current queue",
     type: CommandType.SLASH,
-    guild: true,
+    guildOnly: true,
 
     callback: async ({interaction}) => {
         const queue = useQueue(interaction.guild.id);
         if(!queue || !queue.isPlaying()) {
             return "There are no songs in the queue"
         }
+
         try {
-            const tracksTitle = queue.tracks.map(track => track).join('\n');
+            const tracksTitle = queue.tracks.map(track => track.title).join('\n');
             const currentQueue = new EmbedBuilder()
                 .setTitle("Current queue")
                 .setDescription(`**Now playing**: ${queue.currentTrack} \n **Upcomming**: ${tracksTitle}`)

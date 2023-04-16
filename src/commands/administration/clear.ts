@@ -9,7 +9,6 @@ export default {
     description: "clear messages",
     type: CommandType.SLASH,
     permissions: [PermissionFlagsBits.ManageMessages],
-    testOnly: true,
     guildOnly: true,
     options: [
         {

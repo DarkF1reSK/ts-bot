@@ -4,6 +4,8 @@ import client from "../index"
 
 const player = new Player(client, {
     lagMonitor: 1000,
+    connectionTimeout: 300000,
+    smoothVolume: true,
     ytdlOptions: {
         filter: "audioandvideo",
         quality: "highestaudio",

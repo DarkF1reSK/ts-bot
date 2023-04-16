@@ -15,7 +15,6 @@ export default {
             if (!queue || !queue.isPlaying()) {
                 return interaction.reply({ content: "There is not playing anything", ephemeral: true })
             }
-            console.log(queue.tracks)
 
             const progress = queue.node.createProgressBar()
             const ts = queue.node.getTimestamp();

@@ -5,7 +5,7 @@ import {ApplicationCommandOptionType} from "discord.js";
 export default {
     description: "Sets the volume for songs",
     type: CommandType.SLASH,
-    guild: true,
+    guildOnly: true,
 
     options: [
         {

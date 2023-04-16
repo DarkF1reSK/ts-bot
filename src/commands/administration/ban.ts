@@ -3,7 +3,6 @@ import { ApplicationCommandOptionType, GuildMember, PermissionFlagsBits} from "d
 import { Embeds} from "../../embeds/ban-embeds"
 export default {
     type: CommandType.SLASH,
-    testOnly: true,
     description: "Bans a user",
     permissions: [PermissionFlagsBits.BanMembers],
     guildOnly: true,

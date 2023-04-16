@@ -44,7 +44,12 @@ export default {
                 await interaction.editReply({ embeds: [embed] })
             }
         }catch (error) {
+            if (error == "Could not parse lyrics") {
+                interaction.channel.send("Could not find lyrics")
+                return
+            }
             console.log(error)
+            return "Error"
         }
     }
 } as CommandObject

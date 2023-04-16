@@ -4,7 +4,7 @@ import player from "../../utils/player";
 export default {
     description: "Clears the queue",
     type: CommandType.SLASH,
-    guild: true,
+    guildOnly: true,
 
     callback: async ({interaction}) => {
         try {

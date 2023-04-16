@@ -5,7 +5,7 @@ import player from "../../utils/player";
 export default {
     description: "Skips a current song",
     type: CommandType.SLASH,
-    guild: true,
+    guildOnly: true,
 
     callback: ({interaction}) => {
         try{

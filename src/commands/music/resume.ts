@@ -4,7 +4,7 @@ import player from "../../utils/player";
 export default {
     description: "pause the current song",
     type: CommandType.SLASH,
-    guild: true,
+    guildOnly: true,
 
     callback: async ({interaction}) => {
         try{
