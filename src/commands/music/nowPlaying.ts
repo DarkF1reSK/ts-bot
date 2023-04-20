@@ -1,5 +1,5 @@
 import {CommandObject, CommandType} from "wokcommands";
-import player from "../../utils/player";
+import player from "../../utils/Player";
 import { EmbedBuilder} from "discord.js";
 
 export default {

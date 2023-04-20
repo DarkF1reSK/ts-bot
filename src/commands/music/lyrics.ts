@@ -1,7 +1,7 @@
 import {CommandObject, CommandType} from "wokcommands";
 import {ApplicationCommandOptionType, EmbedBuilder} from "discord.js";
 const { lyricsExtractor } = require("@discord-player/extractor")
-import player from "../../utils/player";
+import player from "../../utils/Player";
 
 
 const search = lyricsExtractor()
@@ -44,9 +44,8 @@ export default {
                 await interaction.editReply({ embeds: [embed] })
             }
         }catch (error) {
-            if (error == "Could not parse lyrics") {
-                interaction.channel.send("Could not find lyrics")
-                return
+            if (error) {
+                interaction.editReply({ content: "Could not parse lyrics"})
             }
             console.log(error)
             return "Error"

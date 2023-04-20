@@ -1,7 +1,7 @@
 import {CommandObject, CommandType} from "wokcommands";
 import {ApplicationCommandOptionType} from "discord.js";
 import {QueueRepeatMode} from "discord-player";
-import player from "../../utils/player";
+import player from "../../utils/Player";
 
 export default {
     description: "Loops the queue",

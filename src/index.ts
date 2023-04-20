@@ -1,6 +1,6 @@
 import {Client, GatewayIntentBits, Partials, Events} from 'discord.js';
 import {token, mongouri, owners, testServers} from "../config.json"
-import WOK from "wokcommands"
+import WOK, { DefaultCommands } from "wokcommands"
 import path from "path";
 import mongoose from "mongoose"
 
@@ -34,6 +34,14 @@ client.on(Events.ClientReady, () => {
         mongoUri: mongouri,
         testServers: testServers,
         botOwners: owners,
+        disabledDefaultCommands: [
+            DefaultCommands.ChannelCommand,
+            DefaultCommands.CustomCommand,
+            DefaultCommands.Prefix,
+            DefaultCommands.RequiredPermissions,
+            DefaultCommands.RequiredRoles,
+            DefaultCommands.ToggleCommand
+          ],
 
 
     })
