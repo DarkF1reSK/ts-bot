@@ -7,6 +7,7 @@ export interface IScheduledPost {
     guildId: string;
     channelId: string;
     userName: string;
+    id: string
 }
 
 
@@ -25,6 +26,7 @@ const scheduledSchema = new mongoose.Schema<IScheduledPost>({
     guildId: reqString,
     channelId: reqString,
     userName: reqString,
+    id: reqString,
 })
 
 

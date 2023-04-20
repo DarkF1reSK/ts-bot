@@ -1,11 +1,11 @@
 import momentTimezone from 'moment-timezone';
 import { CommandObject, CommandType} from "wokcommands";
 import {ApplicationCommandOptionType} from "discord.js";
-import scheduledSchema, {IScheduledPost} from "../schemas/schedule-schema";
+import scheduledSchema, {IScheduledPost} from "../../schemas/schedule-schema";
 
 
 //embed imports
-import {Embeds} from "../embeds/schedule-embeds"
+import {Embeds} from "../../embeds/schedule-embeds"
 
 
 export default {
@@ -138,6 +138,7 @@ export default {
             guildId: guild.id,
             channelId: channel.id,
             userName: interactionUser.user.username,
+            id: Math.floor(Math.random() * 10000).toString(),
         }).save()
 
     }
