@@ -6,6 +6,7 @@ export default {
     type: CommandType.SLASH,
     guildOnly: true,
 
+
     callback: async ({interaction}) => {
         try {
             const queue = player.nodes.get(interaction.guild)

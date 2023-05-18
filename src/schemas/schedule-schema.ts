@@ -30,7 +30,6 @@ const scheduledSchema = new mongoose.Schema<IScheduledPost>({
 })
 
 
-
 const name = 'scheduled-posts'
 
 const ScheduledPost: mongoose.Model<IScheduledPost> = mongoose.models[name] || mongoose.model<IScheduledPost>(name, scheduledSchema)

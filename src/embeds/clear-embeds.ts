@@ -5,6 +5,7 @@ export class Embeds {
         const embed = new EmbedBuilder()
             .setColor("DarkRed")
             .setDescription("**You must specify a number between 1 and 100.**")
+            .setTimestamp()
 
         return embed
     }
@@ -12,6 +13,7 @@ export class Embeds {
         const embed = new EmbedBuilder()
             .setColor("Green")
             .setDescription(`Successfully deleted ${size} messages.`)
+            .setTimestamp()
         return embed
     }
 }

@@ -6,6 +6,7 @@ export class Embeds {
             .setTitle("Error")
             .setColor("Red")
             .setDescription("Invalid clock type, please use `PM` or `AM`")
+            .setTimestamp()
 
         return embed
     }
@@ -15,6 +16,7 @@ export class Embeds {
             .setTitle("Error")
             .setColor("Red")
             .setDescription(`Invalid Timezone`)
+            .setTimestamp()
         return embed
     }
 
@@ -24,6 +26,7 @@ export class Embeds {
             .setTitle("Message scheduled")
             .setColor("Green")
             .setDescription(`Scheduled message **${message}** to ${date}`)
+            .setTimestamp()
 
         return embed
     }
@@ -32,6 +35,7 @@ export class Embeds {
             .setColor("Random")
             .setDescription(`**${message}**`)
             .setFooter({text: `Scheduled by ${user}`})
+            .setTimestamp()
 
         return embed
     }

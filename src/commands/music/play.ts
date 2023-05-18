@@ -16,26 +16,11 @@ export default {
             required: true,
 
         },
-        {
-            name: "247",
-            description: "24/7",
-            type: ApplicationCommandOptionType.String,
-            required: false,
-            choices: [
-                {
-                    name: "yes",
-                    value: "false",
-                },
-                {
-                    name: "no",
-                    value: "true",
-                }
-            ]
-        }
+
     ],
     callback: async({interaction, guild}) => {
         try {
-            const stri = interaction.options.getString("247")
+
             const check = interaction.options.getString("track")
 
             const result = await player.search(check, {
@@ -64,7 +49,7 @@ export default {
                         requestedBy: interaction.user.username
                     },
                     bufferingTimeout: 3000,
-                    leaveOnEnd: stri === "false" ? false : true
+                    leaveOnEnd: false,
                 },
 
             })

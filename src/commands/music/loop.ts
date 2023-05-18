@@ -17,26 +17,25 @@ export default {
             choices: [
                 {
                     name: "off",
-                    value: QueueRepeatMode.OFF,
+                    value: QueueRepeatMode.OFF.toString(),
                 },
                 {
                     name: "track",
-                    value: QueueRepeatMode.TRACK,
+                    value: QueueRepeatMode.TRACK.toString(),
                 },
                 {
                     name: "queue",
-                    value: QueueRepeatMode.QUEUE,
+                    value: QueueRepeatMode.QUEUE.toString(),
                 },
                 {
                     name: "autoplay",
-                    value: QueueRepeatMode.AUTOPLAY,
+                    value: QueueRepeatMode.AUTOPLAY.toString(),
                 },
             ]
         }
     ],
     callback: async ({interaction}) => {
         let loopMode = Number(interaction.options.getString("options"))
-
 
         try {
 

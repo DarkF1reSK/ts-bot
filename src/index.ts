@@ -4,9 +4,6 @@ import WOK, { DefaultCommands } from "wokcommands"
 import path from "path";
 import mongoose from "mongoose"
 
-mongoose.set("strictQuery", true)
-
-
 
 const client = new Client({ intents: [
         GatewayIntentBits.Guilds,
@@ -19,11 +16,13 @@ const client = new Client({ intents: [
     },
 );
 
+
 export default client
 
-client.on(Events.ClientReady, () => {
+client.on(Events.ClientReady, async () => {
     console.log('Client ready')
-
+    await mongoose.connect(mongouri)
+    mongoose.set("strictQuery", true)
     new WOK ({
         client,
         commandsDir: path.join(__dirname, 'commands'),
