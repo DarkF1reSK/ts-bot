@@ -67,7 +67,6 @@ exports["default"] = {
     description: "Audio filter",
     type: wokcommands_1.CommandType.SLASH,
     guildOnly: true,
-    testOnly: true,
     options: [
         {
             name: "filter",

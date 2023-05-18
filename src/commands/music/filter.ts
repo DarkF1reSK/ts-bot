@@ -27,7 +27,7 @@ export default {
     description: "Audio filter",
     type: CommandType.SLASH,
     guildOnly: true,
-    testOnly: true,
+
 
 
     options: [

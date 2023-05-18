@@ -43,7 +43,6 @@ var wokcommands_1 = require("wokcommands");
 var request_1 = __importDefault(require("request"));
 exports["default"] = {
     description: "score",
-    testOnly: true,
     type: wokcommands_1.CommandType.SLASH,
     callback: function (_a) {
         var interaction = _a.interaction;

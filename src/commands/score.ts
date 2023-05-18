@@ -26,7 +26,6 @@ interface APIResponse {
 
 export default {
     description: "score",
-    testOnly: true,
     type: CommandType.SLASH,
 
     callback: async ({interaction}) => {
