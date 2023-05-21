@@ -1,14 +1,32 @@
 import {CommandObject, CommandType} from "wokcommands";
 import request from "request"
+import {EmbedBuilder} from "discord.js";
 
 interface Team {
     id: number;
     name: string;
+    logo: string
 }
 
 interface Score {
     home: number;
     away: number;
+}
+
+interface periods {
+    first: string;
+    second: string;
+    third: string
+    overtime: string
+    penalties: string
+}
+
+interface league {
+    id: number;
+    name: string;
+    type: string;
+    logo: string;
+    season: number;
 }
 
 interface Game {
@@ -17,6 +35,8 @@ interface Game {
         away: Team;
     },
     scores: Score;
+    periods: periods;
+    league: league
 }
 
 interface APIResponse {
@@ -62,7 +82,23 @@ export default {
             ) {
                 const game: Game = apiResponse.response[0];
                 const { home, away } = game.teams;
-                interaction.reply(`Home Team: ${home.name} Score ${game.scores.home}\nAway Team: ${away.name} Score ${game.scores.away}`);
+                const period = game.periods
+
+                const message = `
+Teams: ${home.name} vs ${away.name}
+Score: ${game.scores.home} | ${game.scores.away}
+
+**Periods:**
+\`\`\`
+first: ${period.first}
+second: ${period.second}
+third: ${period.third}
+overtime: ${period.overtime}
+penalties: ${period.penalties}
+\`\`\``;
+
+
+                interaction.reply({content: message});
 
             } else {
                 console.log("No scores available for the specified game.");

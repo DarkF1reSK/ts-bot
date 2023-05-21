@@ -5,11 +5,16 @@ import path from "path";
 import mongoose from "mongoose"
 
 
+mongoose.connect(mongouri)
+mongoose.set("strictQuery", true)
+
+
 const client = new Client({ intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.MessageContent,
     ],
     partials: [Partials.Channel],
 
@@ -20,15 +25,15 @@ const client = new Client({ intents: [
 export default client
 
 client.on(Events.ClientReady, async () => {
-    console.log('Client ready')
-    await mongoose.connect(mongouri)
-    mongoose.set("strictQuery", true)
+
+
     new WOK ({
         client,
         commandsDir: path.join(__dirname, 'commands'),
         featuresDir: path.join(__dirname, 'features'),
         events: {
             dir: path.join(__dirname, 'events'),
+
         },
         mongoUri: mongouri,
         testServers: testServers,
