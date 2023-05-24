@@ -1,9 +1,8 @@
 import momentTimezone from 'moment-timezone';
 import { CommandObject, CommandType} from "wokcommands";
 import {ApplicationCommandOptionType} from "discord.js";
-import scheduledSchema, {IScheduledPost} from "../../schemas/schedule-schema";
-
-
+import {IScheduledPost} from "../../schemas/schedule-schema";
+import {scheduledDb} from "../../features/createDB";
 //embed imports
 import {Embeds} from "../../embeds/schedule-embeds"
 
@@ -54,42 +53,40 @@ export default {
     ],
 
 
-
     init: (client) => {
         const checkForPosts = async () => {
             const query = {
                 date: {
                     $lte: Date.now(),
                 },
-            }
+            };
 
-            const results = await scheduledSchema.find(query)
+            const results = await scheduledDb.find<IScheduledPost>(query);
 
             for (const post of results) {
-                const { guildId, channelId, content, userName} = post
+                const { guildId, channelId, content, userName } = post;
 
-                const guild = await client.guilds.fetch(guildId)
+                const guild = await client.guilds.fetch(guildId);
                 if (!guild) {
-                    continue
+                    continue;
                 }
 
-                const channel = guild.channels.cache.get(channelId)
+                const channel = guild.channels.cache.get(channelId);
                 if (!channel) {
-                    continue
+                    continue;
                 }
 
-                    channel.send({
-                        embeds: [Embeds.message(content, userName)]
-                    })
-
+                channel.send({
+                    embeds: [Embeds.message(content, userName)],
+                });
             }
 
-            await scheduledSchema.deleteMany(query)
+            await scheduledDb.remove(query, { multi: true });
 
-            setTimeout(checkForPosts, 1000 * 10)
-        }
+            setTimeout(checkForPosts, 1000 * 10);
+        };
 
-        checkForPosts()
+        checkForPosts();
     },
 
 
@@ -102,7 +99,6 @@ export default {
         //const timeZone = interaction.options.getString('timezone')
         //hardcoded timeZone feel free to remove it
         const timeZone = "CET"
-
 
         if (clockType !== 'AM' && clockType !== 'PM') {
             interaction.reply({
@@ -132,14 +128,14 @@ export default {
         })
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
         //console.log(`nickname: ${interactionUser.nickname}, username ${interactionUser.user.username}, id: ${interactionUser.id}`)
-        await new scheduledSchema({
+        await scheduledDb.insert({
             date: targetDate.valueOf(),
             content: message,
             guildId: guild.id,
             channelId: channel.id,
             userName: interactionUser.user.username,
             id: Math.floor(Math.random() * 10000).toString(),
-        }).save()
+        });
 
     }
 } as CommandObject;

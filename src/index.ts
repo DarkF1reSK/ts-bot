@@ -2,11 +2,7 @@ import {Client, GatewayIntentBits, Partials, Events} from 'discord.js';
 import {token, mongouri, owners, testServers} from "../config.json"
 import WOK, { DefaultCommands } from "wokcommands"
 import path from "path";
-import mongoose from "mongoose"
 
-
-mongoose.connect(mongouri)
-mongoose.set("strictQuery", true)
 
 
 const client = new Client({ intents: [
@@ -35,7 +31,6 @@ client.on(Events.ClientReady, async () => {
             dir: path.join(__dirname, 'events'),
 
         },
-        mongoUri: mongouri,
         testServers: testServers,
         botOwners: owners,
         disabledDefaultCommands: [

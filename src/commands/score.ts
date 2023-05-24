@@ -29,6 +29,12 @@ interface league {
     season: number;
 }
 
+interface status {
+    long: string;
+    short: string;
+}
+
+
 interface Game {
     teams: {
         home: Team;
@@ -37,6 +43,14 @@ interface Game {
     scores: Score;
     periods: periods;
     league: league
+    status: status
+    id: number
+    date: string
+    time: string
+    timestamp: number
+    timezone: string
+    week: string
+    timer: string
 }
 
 interface APIResponse {
@@ -63,7 +77,7 @@ export default {
             qs: {league: "111",
                 season: "2023",
 
-                date: `${todayDate}`},
+                date: `2023-05-20`},
             headers: {
                 'x-rapidapi-host': 'v1.hockey.api-sports.io',
                 'x-rapidapi-key': '0af98c4008986f46dc7044a9cb8ca41b'
@@ -80,26 +94,29 @@ export default {
                 apiResponse.response &&
                 apiResponse.response.length > 0
             ) {
-                const game: Game = apiResponse.response[0];
-                const { home, away } = game.teams;
-                const period = game.periods
 
-                const message = `
-Teams: ${home.name} vs ${away.name}
-Score: ${game.scores.home} | ${game.scores.away}
+                const game: Game[] = apiResponse.response;
+                const embeds: EmbedBuilder[] = [];
+                console.log();
+                game.forEach((game) => {
+                    const embed = new EmbedBuilder()
+                        .setColor('#0099ff')
+                        .setDescription(`
+            **Teams:** \`${game.teams.home.name} vs ${game.teams.away.name}\`
+            **Score:** \`${game.scores.home} - ${game.scores.away}\`
+            **Periods:** 
+            \u200B \u200B \u200B \u200B First: \`${game.periods.first}\` 
+            \u200B \u200B \u200B \u200B Second: \`${game.periods.second}\` 
+            \u200B \u200B \u200B \u200B Third: \`${game.periods.third}\`
+            \u200B \u200B \u200B \u200B Overtime: \`${game.periods.overtime}\`
+            \u200B \u200B \u200B \u200B Penalties: \`${game.periods.penalties}\`
+            **State:** \`${game.status.long}\`
+          `);
 
-**Periods:**
-\`\`\`
-first: ${period.first}
-second: ${period.second}
-third: ${period.third}
-overtime: ${period.overtime}
-penalties: ${period.penalties}
-\`\`\``;
+                    embeds.push(embed);
+                });
 
-
-                interaction.reply({content: message});
-
+                interaction.reply({ embeds: embeds });
             } else {
                 console.log("No scores available for the specified game.");
             }

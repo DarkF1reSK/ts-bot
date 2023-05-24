@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 var wokcommands_1 = require("wokcommands");
 var request_1 = __importDefault(require("request"));
+var discord_js_1 = require("discord.js");
 exports["default"] = {
     description: "score",
     type: wokcommands_1.CommandType.SLASH,
@@ -59,7 +60,7 @@ exports["default"] = {
                     url: 'https://v1.hockey.api-sports.io/games',
                     qs: { league: "111",
                         season: "2023",
-                        date: "".concat(todayDate) },
+                        date: "2023-05-20" },
                     headers: {
                         'x-rapidapi-host': 'v1.hockey.api-sports.io',
                         'x-rapidapi-key': '0af98c4008986f46dc7044a9cb8ca41b'
@@ -72,9 +73,16 @@ exports["default"] = {
                     if (apiResponse.get === "games" &&
                         apiResponse.response &&
                         apiResponse.response.length > 0) {
-                        var game = apiResponse.response[0];
-                        var _a = game.teams, home = _a.home, away = _a.away;
-                        interaction.reply("Home Team: ".concat(home.name, " Score ").concat(game.scores.home, "\nAway Team: ").concat(away.name, " Score ").concat(game.scores.away));
+                        var game = apiResponse.response;
+                        var embeds_1 = [];
+                        console.log();
+                        game.forEach(function (game) {
+                            var embed = new discord_js_1.EmbedBuilder()
+                                .setColor('#0099ff')
+                                .setDescription("\n            **Teams:** `".concat(game.teams.home.name, " vs ").concat(game.teams.away.name, "`\n            **Score:** `").concat(game.scores.home, " - ").concat(game.scores.away, "`\n            **Periods:** \n            \u200B \u200B \u200B \u200B First: `").concat(game.periods.first, "` \n            \u200B \u200B \u200B \u200B Second: `").concat(game.periods.second, "` \n            \u200B \u200B \u200B \u200B Third: `").concat(game.periods.third, "`\n            \u200B \u200B \u200B \u200B Overtime: `").concat(game.periods.overtime, "`\n            \u200B \u200B \u200B \u200B Penalties: `").concat(game.periods.penalties, "`\n            **State:** `").concat(game.status.long, "`\n          "));
+                            embeds_1.push(embed);
+                        });
+                        interaction.reply({ embeds: embeds_1 });
                     }
                     else {
                         console.log("No scores available for the specified game.");

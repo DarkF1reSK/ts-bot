@@ -35,13 +35,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
 var wokcommands_1 = require("wokcommands");
-var schedule_schema_1 = __importDefault(require("../../schemas/schedule-schema"));
 var discord_js_1 = require("discord.js");
+var createDB_1 = require("../../features/createDB");
 exports["default"] = {
     description: "list all scheduled messages for this guild",
     type: wokcommands_1.CommandType.SLASH,
@@ -51,22 +48,26 @@ exports["default"] = {
             var data, embed;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, schedule_schema_1["default"].find({ guildId: guild.id }).lean()];
+                    case 0: return [4 /*yield*/, createDB_1.scheduledDb.find({ guildId: guild.id })];
                     case 1:
                         data = _b.sent();
                         embed = new discord_js_1.EmbedBuilder()
                             .setTitle("Scheduled messages");
                         return [4 /*yield*/, data.forEach(function (d) {
                                 //it works don't ask
-                                var messages = data.map(function (d) { return "```".concat(d.content, "```**").concat(d.date.toLocaleString("en-us", {
-                                    weekday: 'long',
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    hour12: true
-                                }), " **\n id: `").concat(d.id, "`\n\n"); }).join("");
+                                var messages = data.map(function (d) {
+                                    var date = new Date(d.date);
+                                    var formattedDate = date.toLocaleString("en-us", {
+                                        weekday: "long",
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        hour12: true
+                                    });
+                                    return "```".concat(d.content, "```**").concat(formattedDate, "**\n id: `").concat(d.id, "`\n\n");
+                                }).join("");
                                 embed.setDescription(messages);
                             })];
                     case 2:

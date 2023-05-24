@@ -35,13 +35,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
 var wokcommands_1 = require("wokcommands");
 var discord_js_1 = require("discord.js");
-var schedule_schema_1 = __importDefault(require("../../schemas/schedule-schema"));
+var createDB_1 = require("../../features/createDB");
 exports["default"] = {
     description: "Delete scheduled message by id",
     type: wokcommands_1.CommandType.SLASH,
@@ -61,7 +58,7 @@ exports["default"] = {
                 switch (_b.label) {
                     case 0:
                         sche_id = interaction.options.getString("id");
-                        return [4 /*yield*/, schedule_schema_1["default"].findOneAndDelete({ guildId: guild.id, id: sche_id })];
+                        return [4 /*yield*/, createDB_1.scheduledDb.remove({ guildId: guild.id, id: sche_id }, { multi: false })];
                     case 1:
                         _b.sent();
                         interaction.reply({

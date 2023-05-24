@@ -42,7 +42,7 @@ exports.__esModule = true;
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 var wokcommands_1 = require("wokcommands");
 var discord_js_1 = require("discord.js");
-var schedule_schema_1 = __importDefault(require("../../schemas/schedule-schema"));
+var createDB_1 = require("../../features/createDB");
 //embed imports
 var schedule_embeds_1 = require("../../embeds/schedule-embeds");
 exports["default"] = {
@@ -98,7 +98,7 @@ exports["default"] = {
                                 $lte: Date.now()
                             }
                         };
-                        return [4 /*yield*/, schedule_schema_1["default"].find(query)];
+                        return [4 /*yield*/, createDB_1.scheduledDb.find(query)];
                     case 1:
                         results = _a.sent();
                         _i = 0, results_1 = results;
@@ -124,7 +124,7 @@ exports["default"] = {
                     case 4:
                         _i++;
                         return [3 /*break*/, 2];
-                    case 5: return [4 /*yield*/, schedule_schema_1["default"].deleteMany(query)];
+                    case 5: return [4 /*yield*/, createDB_1.scheduledDb.remove(query, { multi: true })];
                     case 6:
                         _a.sent();
                         setTimeout(checkForPosts, 1000 * 10);
@@ -173,14 +173,14 @@ exports["default"] = {
                     case 1:
                         interactionUser = _b.sent();
                         //console.log(`nickname: ${interactionUser.nickname}, username ${interactionUser.user.username}, id: ${interactionUser.id}`)
-                        return [4 /*yield*/, new schedule_schema_1["default"]({
+                        return [4 /*yield*/, createDB_1.scheduledDb.insert({
                                 date: targetDate.valueOf(),
                                 content: message,
                                 guildId: guild.id,
                                 channelId: channel.id,
                                 userName: interactionUser.user.username,
                                 id: Math.floor(Math.random() * 10000).toString()
-                            }).save()];
+                            })];
                     case 2:
                         //console.log(`nickname: ${interactionUser.nickname}, username ${interactionUser.user.username}, id: ${interactionUser.id}`)
                         _b.sent();

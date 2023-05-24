@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-
+import Datastore from 'nedb-promises';
+import path from "path"
 
 export interface IScheduledPost {
     date: Date;
@@ -7,30 +7,6 @@ export interface IScheduledPost {
     guildId: string;
     channelId: string;
     userName: string;
-    id: string
+    id: string;
 }
 
-
-
-const reqString = {
-    type: String,
-    required: true,
-}
-
-const scheduledSchema = new mongoose.Schema<IScheduledPost>({
-    date: {
-        type: Date,
-        required: true,
-    },
-    content: reqString,
-    guildId: reqString,
-    channelId: reqString,
-    userName: reqString,
-    id: reqString,
-})
-
-
-const name = 'scheduled-posts'
-
-const ScheduledPost: mongoose.Model<IScheduledPost> = mongoose.models[name] || mongoose.model<IScheduledPost>(name, scheduledSchema)
-export default ScheduledPost

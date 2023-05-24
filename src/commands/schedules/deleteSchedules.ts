@@ -1,6 +1,7 @@
-import {CommandObject, CommandType} from "wokcommands";
-import {ApplicationCommandOptionType} from "discord.js";
-import scheduledSchema, {IScheduledPost} from "../../schemas/schedule-schema"
+import { CommandObject, CommandType } from "wokcommands";
+import { ApplicationCommandOptionType } from "discord.js";
+import {scheduledDb} from "../../features/createDB";
+
 
 export default {
     description: "Delete scheduled message by id",
@@ -15,15 +16,12 @@ export default {
         }
     ],
 
-    callback: async ({interaction, guild}) => {
-        const sche_id = interaction.options.getString("id")
-        await scheduledSchema.findOneAndDelete({guildId: guild.id, id: sche_id})
+    callback: async ({ interaction, guild }) => {
+        const sche_id = interaction.options.getString("id");
+        await scheduledDb.remove({ guildId: guild.id, id: sche_id }, { multi: false });
+
         interaction.reply({
             content: "Schedule deleted",
-        })
-
+        });
     }
-
-
-
-} as CommandObject
+} as CommandObject;

@@ -1,29 +1,40 @@
 import {CommandObject, CommandType} from "wokcommands";
-import scheduledSchema, {IScheduledPost} from "../../schemas/schedule-schema"
+import {IScheduledPost} from "../../schemas/schedule-schema"
 import {EmbedBuilder} from "discord.js";
+import {scheduledDb} from "../../features/createDB";
+
+
 export default {
     description: "list all scheduled messages for this guild",
     type: CommandType.SLASH,
 
 
     callback: async ({interaction, guild}) => {
-        const data = await scheduledSchema.find({guildId: guild.id}).lean()
+        const data = await scheduledDb.find<IScheduledPost>({ guildId: guild.id, });
 
         const embed = new EmbedBuilder()
             .setTitle("Scheduled messages")
 
         await data.forEach(d => {
             //it works don't ask
-            const messages = data.map((d) => `\`\`\`${d.content}\`\`\`**${d.date.toLocaleString("en-us", {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true,})} **\n id: \`${d.id}\`\n\n`).join("");
+
+            const messages = data.map((d) => {
+                const date = new Date(d.date)
+                const formattedDate = date.toLocaleString("en-us", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                });
+                return `\`\`\`${d.content}\`\`\`**${formattedDate}**\n id: \`${d.id}\`\n\n`;
+            }).join("");
             embed.setDescription(messages)
+
         })
+
         try {
             interaction.reply({
                 embeds: [embed],

@@ -66,46 +66,37 @@ var discord_js_1 = require("discord.js");
 var config_json_1 = require("../config.json");
 var wokcommands_1 = __importStar(require("wokcommands"));
 var path_1 = __importDefault(require("path"));
-var mongoose_1 = __importDefault(require("mongoose"));
 var client = new discord_js_1.Client({ intents: [
         discord_js_1.GatewayIntentBits.Guilds,
         discord_js_1.GatewayIntentBits.GuildMembers,
         discord_js_1.GatewayIntentBits.GuildMessages,
         discord_js_1.GatewayIntentBits.GuildVoiceStates,
+        discord_js_1.GatewayIntentBits.MessageContent,
     ],
     partials: [discord_js_1.Partials.Channel]
 });
 exports["default"] = client;
 client.on(discord_js_1.Events.ClientReady, function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                console.log('Client ready');
-                return [4 /*yield*/, mongoose_1["default"].connect(config_json_1.mongouri)];
-            case 1:
-                _a.sent();
-                mongoose_1["default"].set("strictQuery", true);
-                new wokcommands_1["default"]({
-                    client: client,
-                    commandsDir: path_1["default"].join(__dirname, 'commands'),
-                    featuresDir: path_1["default"].join(__dirname, 'features'),
-                    events: {
-                        dir: path_1["default"].join(__dirname, 'events')
-                    },
-                    mongoUri: config_json_1.mongouri,
-                    testServers: config_json_1.testServers,
-                    botOwners: config_json_1.owners,
-                    disabledDefaultCommands: [
-                        wokcommands_1.DefaultCommands.ChannelCommand,
-                        wokcommands_1.DefaultCommands.CustomCommand,
-                        wokcommands_1.DefaultCommands.Prefix,
-                        wokcommands_1.DefaultCommands.RequiredPermissions,
-                        wokcommands_1.DefaultCommands.RequiredRoles,
-                        wokcommands_1.DefaultCommands.ToggleCommand
-                    ]
-                });
-                return [2 /*return*/];
-        }
+        new wokcommands_1["default"]({
+            client: client,
+            commandsDir: path_1["default"].join(__dirname, 'commands'),
+            featuresDir: path_1["default"].join(__dirname, 'features'),
+            events: {
+                dir: path_1["default"].join(__dirname, 'events')
+            },
+            testServers: config_json_1.testServers,
+            botOwners: config_json_1.owners,
+            disabledDefaultCommands: [
+                wokcommands_1.DefaultCommands.ChannelCommand,
+                wokcommands_1.DefaultCommands.CustomCommand,
+                wokcommands_1.DefaultCommands.Prefix,
+                wokcommands_1.DefaultCommands.RequiredPermissions,
+                wokcommands_1.DefaultCommands.RequiredRoles,
+                wokcommands_1.DefaultCommands.ToggleCommand
+            ]
+        });
+        return [2 /*return*/];
     });
 }); });
 client.login(config_json_1.token);
