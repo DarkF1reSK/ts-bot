@@ -11,14 +11,16 @@ const client = new Client({ intents: [
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildPresences
     ],
     partials: [Partials.Channel],
 
     },
 );
 
-
 export default client
+
+
 
 client.on(Events.ClientReady, async () => {
 
